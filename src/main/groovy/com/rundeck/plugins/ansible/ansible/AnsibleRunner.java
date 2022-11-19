@@ -400,7 +400,7 @@ public class AnsibleRunner {
       procArgs.add(playbook);
     } else if (type == AnsibleCommand.PlaybookInline) {
 
-	  tempPlaybook = File.createTempFile("ansible-runner", "playbook");
+	  tempPlaybook = Files.createTempFile("ansible-runner", "playbook").toFile();
 	  Files.write(tempPlaybook.toPath(), playbook.toString().getBytes());
 	  procArgs.add(tempPlaybook.getAbsolutePath());
     }
@@ -414,7 +414,7 @@ public class AnsibleRunner {
       procArgs.add(limits.get(0));
 
     } else if (limits != null && limits.size() > 1) {
-      tempFile = File.createTempFile("ansible-runner", "targets");
+      tempFile = Files.createTempFile("ansible-runner", "targets").toFile();
       StringBuilder sb = new StringBuilder();
       for (String limit : limits) {
         sb.append(limit).append("\n");
@@ -430,19 +430,19 @@ public class AnsibleRunner {
     }
 
     if (extraVars != null && extraVars.length() > 0) {
-    	tempVarsFile = File.createTempFile("ansible-runner", "extra-vars");
+    	tempVarsFile = Files.createTempFile("ansible-runner", "extra-vars").toFile();
     	Files.write(tempVarsFile.toPath(), extraVars.getBytes());
         procArgs.add("--extra-vars" + "=" + "@" + tempVarsFile.getAbsolutePath());
     }
 
     if (vaultPass != null && vaultPass.length() > 0) {
-      tempVaultFile = File.createTempFile("ansible-runner", "vault");
+      tempVaultFile = Files.createTempFile("ansible-runner", "vault").toFile();
       Files.write(tempVaultFile.toPath(), vaultPass.getBytes());
       procArgs.add("--vault-password-file" + "=" + tempVaultFile.getAbsolutePath());
     }
 
     if (sshPrivateKey != null && sshPrivateKey.length() > 0) {
-       tempPkFile = File.createTempFile("ansible-runner", "id_rsa");
+       tempPkFile = Files.createTempFile("ansible-runner", "id_rsa").toFile();
        // Only the owner can read and write
        Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
        perms.add(PosixFilePermission.OWNER_READ);

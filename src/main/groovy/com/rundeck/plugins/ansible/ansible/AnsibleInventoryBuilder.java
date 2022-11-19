@@ -5,6 +5,7 @@ import com.dtolabs.rundeck.core.plugins.configuration.ConfigurationException;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class AnsibleInventoryBuilder {
 
     public File buildInventory() throws ConfigurationException {
         try {
-            File file = File.createTempFile("ansible-inventory", ".json");
+            File file = Files.createTempFile("ansible-inventory", ".json").toFile();
             file.deleteOnExit();
             PrintWriter writer = new PrintWriter(file);
             AnsibleInventory ai = new AnsibleInventory();
